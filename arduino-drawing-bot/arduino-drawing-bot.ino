@@ -12,10 +12,12 @@ void setup() {
   //Motor A
   stepper1.setMaxSpeed(800.0);
   stepper1.setAcceleration(100.0);
+  stepper1.setCurrentPosition(113); // 10 degree
 
   //Motor B
   stepper2.setMaxSpeed(800.0);
   stepper2.setAcceleration(100.0);
+  stepper2.setCurrentPosition(0); // 0 degree
 }
 
 void loop() {
@@ -30,14 +32,12 @@ void loop() {
     StaticJsonBuffer<200> jsonBuffer;
     JsonObject &root = jsonBuffer.parseObject(json);
 
-    int id = root["id"];
-    int angle = root["angle"];
-    int step = calculateStep(angle);
-    if (id == 1) {
-      stepper1.moveTo(step);
-    } else if (id == 2) {
-      stepper2.moveTo(step);
-    }
+    int angle1 = root["angle1"];
+    int angle2 = root["angle2"];
+    int step1 = calculateStep(angle1);
+    int step2 = calculateStep(angle2);
+    stepper1.moveTo(step1);
+    stepper2.moveTo(step2);
   }
 
   stepper1.run();
